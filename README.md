@@ -4,7 +4,7 @@ This repository contains my working tests on OpenGL API that I'm playing with du
 
 There're two main folders with projects using standard GLFW or QtOpenGL from PySide2 framework.
 
-Every project is a one-file script. Each ao them could be rewritten later.
+Every project is a one-file script. Each of them might be rewritten later.
 
 **!! WORK IS STILL IN PROGRESS !!** 
  
