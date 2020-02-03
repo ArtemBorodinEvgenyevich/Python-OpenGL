@@ -93,9 +93,6 @@ class nViewport(QtWidgets.QOpenGLWidget):
         print("------------------------------>\n")
 
 
-
-
-
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
 
