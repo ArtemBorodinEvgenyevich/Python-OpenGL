@@ -70,7 +70,6 @@ class nViewport(QtWidgets.QOpenGLWidget):
         self.setWindowTitle(title)
         self.resize(self.widht, self.height)
 
-
     def initializeGL(self):
         pass
 
@@ -78,7 +77,6 @@ class nViewport(QtWidgets.QOpenGLWidget):
         glClear(GL_COLOR_BUFFER_BIT)
         glClearColor(self.bg_color[0], self.bg_color[1],
                      self.bg_color[2], self.bg_color[3])
-
 
     def resizeGL(self, w:int, h:int):
         glViewport(0, 0, w, h)
