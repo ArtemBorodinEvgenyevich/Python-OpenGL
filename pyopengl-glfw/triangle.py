@@ -116,6 +116,12 @@ class Viewport(object):
     def __process_events(window):
         if glfw.get_key(window, glfw.KEY_ESCAPE) is glfw.PRESS:
             glfw.set_window_should_close(window, True)
+        if glfw.get_key(window, glfw.KEY_W) == glfw.PRESS:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        if glfw.get_key(window, glfw.KEY_F) == glfw.PRESS:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+        if glfw.get_key(window, glfw.KEY_P) == glfw.PRESS:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT)
 
     @staticmethod
     def __check_glfw():

@@ -96,6 +96,8 @@ class Viewport(QtWidgets.QOpenGLWidget):
         self.setWindowTitle(title)
         self.resize(self.width, self.height)
 
+        self.polygon_mode = GL_FILL
+
         self.vertices = np.array([], dtype=np.float32)
 
         # Should be OpenGL.GL.shaders.ShaderProgram
@@ -109,6 +111,8 @@ class Viewport(QtWidgets.QOpenGLWidget):
         Calls paintGL after
         :return:
         """
+        glPolygonMode(GL_FRONT_AND_BACK, self.polygon_mode)
+
         VBO = self.__createVBO(self.vertices)
 
         # Create and bind here once because we have only one VAO that there's no need to bind every time
@@ -123,6 +127,8 @@ class Viewport(QtWidgets.QOpenGLWidget):
         OpenGl main loop.
         :return:
         """
+        glPolygonMode(GL_FRONT_AND_BACK, self.polygon_mode)
+
         glClear(GL_COLOR_BUFFER_BIT)
         glClearColor(self.bg_color[0], self.bg_color[1],
                      self.bg_color[2], self.bg_color[3])
@@ -141,11 +147,25 @@ class Viewport(QtWidgets.QOpenGLWidget):
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         """
         Process events from keyboard.
+        W - for wireframe, P - for point, F - for full fill
         :param event: Event signal
         :return:
         """
         if event.key() == QtCore.Qt.Key_Escape:
             app.exit()
+
+        if event.key() == QtCore.Qt.Key_W:
+            self.polygon_mode = GL_LINE
+            self.update()
+
+        if event.key() == QtCore.Qt.Key_F:
+            self.polygon_mode = GL_FILL
+            self.update()
+
+        if event.key() == QtCore.Qt.Key_P:
+            self.polygon_mode = GL_POINT
+            self.update()
+
         event.accept()
 
     def printDebugInfo(self):
