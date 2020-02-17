@@ -108,9 +108,13 @@ class Viewport(object):
             dialog = ExceptionDialog("GLWFError::Cannot initialize window")
 
         glfw.set_window_pos(window, 400, 200)
+        glfw.set_window_size_callback(window, self.__resize_window)
         glfw.make_context_current(window)
 
         return window
+
+    def __resize_window(self, window, width: int, height: int):
+        glViewport(0, 0, width, height)
 
     @staticmethod
     def __process_events(window):
