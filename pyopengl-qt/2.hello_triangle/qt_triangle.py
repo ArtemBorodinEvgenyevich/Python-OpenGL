@@ -1,69 +1,26 @@
-from utilities.exception_dialog import ExceptionDialog
 import sys
-
-try:
-    from OpenGL.GL import *
-    from OpenGL.GL.shaders import compileProgram, compileShader
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import PyOpenGL\n"
-                             "Run:\npip3 install PyOpenGL")
-
-try:
-    import numpy as np
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import NumPy\n"
-                             "Run:\npip3 install numpy")
-
-try:
-    from PySide2 import QtOpenGL, QtWidgets, QtCore, QtGui
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import PySide2\n"
-                             "Run:\npip3 install PySide2")
-
-try:
-    from OpenGL.GL import *
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import PySide2\n"
-                             "Run:\npip3 install PySide2")
+import numpy as np
+from OpenGL.GL import *
+from OpenGL.GL.shaders import compileShader, compileProgram
+from PySide2 import QtWidgets, QtCore, QtGui
 
 
 class GLSurfaceFormat(QtGui.QSurfaceFormat):
-    def __init__(self, major: int = 4, minor: int = 3,
-                 profile: QtGui.QSurfaceFormat.OpenGLContextProfile = QtGui.QSurfaceFormat.CoreProfile,
-                 color_space: QtGui.QSurfaceFormat.ColorSpace = QtGui.QSurfaceFormat.sRGBColorSpace):
-        """
-        Class to specify settings for OpenGL.
-        :param major: Set major OpenGL version.
-        :param minor: Set minor OpenGL version.
-        :param profile: Set OpenGL to work in Core/Legacy(compatibility) profile.
-        :param color_space: Set Qt which color profile to use.
-        """
-        super().__init__()
-        self.gl_major = major
-        self.gl_minor = minor
-        self.gl_profile = profile
-        self.color_space = color_space
-
-        self.__initSurface()
-
-    def __initSurface(self):
-        """
-        Initiallize OpenGL settings.
-        :return:
-        """
+    """Setup OpenGL preferences."""
+    def __init__(self):
+        super(GLSurfaceFormat, self).__init__()
         self.setRenderableType(QtGui.QSurfaceFormat.OpenGL)
-        self.setMajorVersion(self.gl_major)
-        self.setMinorVersion(self.gl_minor)
-        self.setProfile(self.gl_profile)
-        self.setColorSpace(self.color_space)
-        # You can change it to TripleBuffer if your platform supports it
+        self.setMinorVersion(3)
+        self.setMajorVersion(4)
+        self.setProfile(QtGui.QSurfaceFormat.CoreProfile)
+        # FIXME: only for debug!
+        self.setOption(QtGui.QSurfaceFormat.DebugContext)
+        self.setColorSpace(QtGui.QSurfaceFormat.sRGBColorSpace)
         self.setSwapBehavior(QtGui.QSurfaceFormat.DoubleBuffer)
+        self.setSamples(4)
 
-    def printDebugInfo(self):
-        """
-        Print set settings to console/terminal
-        :return:
-        """
+    def printSurfaceInfo(self):
+        """Get renderer info."""
         print(f"QT_SURFACE_FORMAT::{self.__class__.__name__}")
         print("------------------------------>")
         print(f"INFO::GL_MAJOR_VERSION::{self.majorVersion()}")
@@ -168,16 +125,6 @@ class Viewport(QtWidgets.QOpenGLWidget):
 
         event.accept()
 
-    def printDebugInfo(self):
-        """
-        Print current OpenGL version
-        :return:
-        """
-        print(f"QT_OPENGL_WIDGET::{self.__class__.__name__}")
-        print("------------------------------>")
-        print(f"INFO::GL_VERSION::{glGetString(GL_VERSION)}")
-        print("------------------------------>\n")
-
     def __createVBO(self, vertices :np.ndarray):
         """
         Generate and bind Vertex buffer.
@@ -247,7 +194,6 @@ if __name__ == '__main__':
 
     surface = GLSurfaceFormat()
     QtGui.QSurfaceFormat.setDefaultFormat(surface)
-    surface.printDebugInfo()
 
     window = Viewport(1280, 720)
 
@@ -255,8 +201,6 @@ if __name__ == '__main__':
                 0.5, -0.5, 0.0,
                 0.0, 0.5, 0.0]
     window.setVertices(vertices)
-
     window.show()
-    window.printDebugInfo()
 
     sys.exit(app.exec_())

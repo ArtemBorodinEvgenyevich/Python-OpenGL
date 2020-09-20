@@ -1,31 +1,11 @@
-# TODO: put code inside a class
-
-
-from utilities.exception_dialog import ExceptionDialog
-
-try:
-    import glfw
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import GLFW\n"
-                             "Run:\npip3 install glfw")
-
-try:
-    from OpenGL.GL import *
-    from OpenGL.GL.shaders import compileProgram, compileShader
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import PyOpenGL\n"
-                             "Run:\npip3 install PyOpenGL")
-
-try:
-    import numpy as np
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import NumPy\n"
-                             "Run:\npip3 install numpy")
+import glfw
+import numpy as np
+from OpenGL.GL import *
+from OpenGL.GL.shaders import compileProgram, compileShader
 
 
 def window_resize(window, width, height):
     glViewport(0, 0, width, height)
-
 
 # initializing glfw library
 if not glfw.init():

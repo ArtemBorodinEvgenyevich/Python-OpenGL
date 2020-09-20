@@ -1,18 +1,7 @@
-from utilities.exception_dialog import ExceptionDialog
+from builtins import RuntimeError
 
-try:
-    import glfw
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import GLFW\n"
-                             "Run:\npip3 install glfw")
-
-try:
-    from OpenGL.GL import *
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import PyOpenGL\n"
-                             "Run:\npip3 install PyOpenGL")
-
-
+import glfw
+from OpenGL.GL import *
 
 class Viewport(object):
     def __init__(self, widht, height, title="OpenGL Window", r=0.2, g=0.3, b=0.3, a=1.0):
@@ -24,7 +13,6 @@ class Viewport(object):
 
         self.__check_glfw()
         self.window = self.__create_window()
-
 
     def main_loop(self):
         while not glfw.window_should_close(self.window):
@@ -47,10 +35,6 @@ class Viewport(object):
 
     def __create_window(self):
         window = glfw.create_window(self.widht, self.height, self.window_title, None, None)
-        # check if window was created
-        if not window:
-            glfw.terminate()
-            dialog = ExceptionDialog("GLWFError::Cannot initialize window")
 
         glfw.set_window_pos(window, 400, 200)
         glfw.make_context_current(window)
@@ -60,7 +44,7 @@ class Viewport(object):
     def __check_glfw(self):
         # Initiallize gflw
         if not glfw.init():
-            dialog = ExceptionDialog("GLFWError::The GLFW lib cannot initialized")
+            raise RuntimeError("GLFW initialization error")
 
 
 if __name__ == '__main__':

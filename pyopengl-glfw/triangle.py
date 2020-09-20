@@ -1,23 +1,7 @@
-from utilities.exception_dialog import ExceptionDialog
-
-try:
-    import glfw
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import GLFW\n"
-                             "Run:\npip3 install glfw")
-
-try:
-    from OpenGL.GL import *
-    from OpenGL.GL.shaders import compileProgram, compileShader
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import PyOpenGL\n"
-                             "Run:\npip3 install PyOpenGL")
-
-try:
-    import numpy as np
-except ImportError:
-    dialog = ExceptionDialog("ImportError::Cannot import NumPy\n"
-                             "Run:\npip3 install numpy")
+import glfw
+import numpy as np
+from OpenGL.GL import *
+from OpenGL.GL.shaders import compileProgram, compileShader
 
 
 class Viewport(object):
@@ -102,10 +86,6 @@ class Viewport(object):
 
     def __create_window(self):
         window = glfw.create_window(self.width, self.height, self.window_title, None, None)
-        # check if window was created
-        if not window:
-            glfw.terminate()
-            dialog = ExceptionDialog("GLWFError::Cannot initialize window")
 
         glfw.set_window_pos(window, 400, 200)
         glfw.set_window_size_callback(window, self.__resize_window)
@@ -131,7 +111,7 @@ class Viewport(object):
     def __check_glfw():
         # Initiallize gflw
         if not glfw.init():
-            dialog = ExceptionDialog("GLFWError::The GLFW lib cannot initialized")
+            raise RuntimeError("GLFW initialization error")
 
     @staticmethod
     def __check_vertices(vertices: np.ndarray, show_coordinates: bool):
