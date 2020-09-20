@@ -1,0 +1,6 @@
+glfw==1.10.1
+numpy==1.18.1
+PyOpenGL==3.1.5
+PySide2==5.14.1
+shiboken2==5.14.1
+
